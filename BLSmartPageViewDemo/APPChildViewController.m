@@ -10,48 +10,34 @@
 #import "ViewController.h"
 #import "AppDelegate.h"
 
-
-
 @interface APPChildViewController ()
-{
-    dispatch_queue_t transmitActionQueue;
-    NSMutableArray * childTransmitDataFIFO;
-}
 
 @end
 
 @implementation APPChildViewController
-@synthesize nibName;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.screenNumber.text = [NSString stringWithFormat:@"Screen #%ld", (long)self.index];
-
-    self.view.tag = self.index;
+    //ViewController.viewControllerNavigationItem.title = [NSString stringWithFormat:@"Screen ######"];
     
-    NSLog(@"view count = %d", self.view.subviews.count);
+    //AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    transmitActionQueue = appDelegate.transmitQueue;
-    childTransmitDataFIFO = appDelegate.transmitDataFIFO;
-    
-    
-    //appDelegate.viewControllerNavigationItemSharedInstance = self.viewControllerNavigationItem;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recvFromBus:) name:@"RecvFromBus" object:nil];
-    
-    for (UIView *subView in self.view.subviews)
+    //if(appDelegate.viewControllerNavigationItemSharedInstance != nil)
     {
-        if ([subView isMemberOfClass:[BLUIButton class]])
-        {
-            BLUIButton *button = (BLUIButton *) subView;
-            
-            [button addTarget:self action:@selector(buttonPressd:) forControlEvents:UIControlEventTouchUpInside];
-            
-        }
-        
+        //appDelegate.viewControllerNavigationItemSharedInstance.title = self.screenNumber.text;
     }
+    
+//    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"homeDemo.png"]];
+//    backgroundView.contentMode = UIViewContentModeScaleToFill;
+//    CGRect frame = backgroundView.frame;
+//    frame.size.width = 1024;
+//    frame.size.height = 703;
+//    backgroundView.frame = frame;
+//    [self.view addSubview:backgroundView];
+//    [self.view sendSubviewToBack:backgroundView];
+    self.view.tag = self.index;
     
     
 }
@@ -90,166 +76,4 @@
 - (IBAction)testButton:(UIButton *)sender {
     NSLog(@"Screen #%ld", (long)self.index);
 }
-
-- (IBAction)buttonPressd:(BLUIButton *)sender {
-    
-    __block NSInteger transmitValue;
-    
-    NSLog(@"buttonPressd #%ld, objName = %@", (long)self.index, sender.objName);
-    
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:self.nibName ofType:@"plist"];
-    
-    if (!path) {
-        return;
-    }
-    NSMutableDictionary *nibPlistDict = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
-    
-    
-    //__block NSMutableDictionary *readFromGroupAddressDict = [[NSMutableDictionary alloc] initWithDictionary:temDict[key]];
-    [nibPlistDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-     {
-         
-         //NSLog(@"dict[%@] = %@", key, temDict[key]);
-         //NSString *objectName = (NSString *)key;
-         if ([key isEqualToString:sender.objName])
-         {
-             NSMutableDictionary *objectPropertyDict = [[NSMutableDictionary alloc] initWithDictionary:nibPlistDict[key]];
-             [objectPropertyDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-              {
-                  if ([key isEqualToString:@"WriteToGroupAddress"])
-                  {
-                      NSString *valueLength = [[NSString alloc]initWithString:objectPropertyDict[@"ValueLength"]];
-                      NSMutableDictionary *writeToGroupAddressDict = [[NSMutableDictionary alloc] initWithDictionary:objectPropertyDict[key]];
-                      [writeToGroupAddressDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-                       {
-                           //NSLog(@"writeToGroupAddressDict[%@] = %@", key, writeToGroupAddressDict[key]);
-                           if ([valueLength isEqualToString:@"1Bit"])
-                           {
-                               if ([sender isSelected])
-                               {
-                                   transmitValue = 0;
-                               }
-                               else
-                               {
-                                   transmitValue = 1;
-                               }
-                               [self blUIButtonTransmitActionWithDestGroupAddress:writeToGroupAddressDict[key] value:transmitValue buttonName:sender.objName valueLength:valueLength];
-                           }
-                       }];
-                  }
-              }];
-         }
-         
-
-     }];
-    
-//    if (sender.selected == YES)
-//    {
-//        [sender setSelected:NO];
-//    }
-//    else
-//    {
-//        [sender setSelected:YES];
-//    }
-}
-
-
-- (void) recvFromBus: (NSNotification*) notification
-{
-    NSDictionary *dict = [notification userInfo];
-    NSLog(@"receive data from bus at NibName = %@ Scene %d dict = %@", self.nibName,self.index, dict);
-    [self actionWithGroupAddress:dict[@"Address"] withObjectValue:[dict[@"Value"] intValue]];
-}
-
-//-(void)dealloc
-//{
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//}
-
-
-- (void)actionWithGroupAddress:(NSString *)groupAddress withObjectValue:(NSInteger)objectValue
-{
-    NSString *path = [[NSBundle mainBundle] pathForResource:self.nibName ofType:@"plist"];
-    
-    if (!path) {
-        return;
-    }
-    NSMutableDictionary *nibPlistDict = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
-    
-    
-    //__block NSMutableDictionary *readFromGroupAddressDict = [[NSMutableDictionary alloc] initWithDictionary:temDict[key]];
-    [nibPlistDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-    {
-        
-        //NSLog(@"dict[%@] = %@", key, temDict[key]);
-        NSString *objectName = (NSString *)key;
-        
-        NSMutableDictionary *objectPropertyDict = [[NSMutableDictionary alloc] initWithDictionary:nibPlistDict[key]];
-        [objectPropertyDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-        {
-            if ([key isEqualToString:@"ReadFromGroupAddress"])
-            {
-                NSString *valueLength = [[NSString alloc]initWithString:objectPropertyDict[@"ValueLength"]];
-                NSMutableDictionary *readFromGroupAddressDict = [[NSMutableDictionary alloc] initWithDictionary:objectPropertyDict[key]];
-                [readFromGroupAddressDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-                {
-                    NSLog(@"readFromGroupAddressDict[%@] = %@", key, readFromGroupAddressDict[key]);
-                    if ([readFromGroupAddressDict[key] isEqualToString:groupAddress])
-                    {
-
-                        [self checkSubViewClassMemberAndActionWithGroupAddress:groupAddress withObjectValue:objectValue withObjectName:objectName withValueLength:valueLength];
-
-                    }
-                }];
-            }
-        }];
-    }];
-    
-}
-
-- (void)checkSubViewClassMemberAndActionWithGroupAddress:(NSString *)groupAddress withObjectValue:(NSInteger)objectValue withObjectName:(NSString *)objectName withValueLength:(NSString *)valueLength
-{
-    for (UIView *subView in self.view.subviews)
-    {
-        if ([subView isMemberOfClass:[BLUIButton class]])
-        {
-            BLUIButton *button = (BLUIButton *) subView;
-            [self blUIButtonUpdateActionWithButtonObject:button buttonValue:objectValue buttonName:objectName valueLength:valueLength];
-        }
-        
-    }
-}
-
-- (void) blUIButtonUpdateActionWithButtonObject:(BLUIButton *)button buttonValue:(NSInteger)value buttonName:(NSString *)name valueLength:(NSString *)valueLength
-{
-    if ([button.objName isEqualToString:name])
-    {
-        if ([valueLength isEqualToString:@"1Bit"])
-        {
-            if (value == 1)
-            {
-                [button setSelected:YES];
-            }
-            else if(value == 0)
-            {
-                [button setSelected:NO];
-            }
-        }
-    }
-
-}
-
-- (void) blUIButtonTransmitActionWithDestGroupAddress:(NSString *)destGroupAddress value:(NSInteger)value buttonName:(NSString *)name valueLength:(NSString *)valueLength
-{
-    //NSLog(@"destGroupAddress = %@, value = %d, name = %@, valueLength = %@", destGroupAddress, value, name, valueLength);
-    if ((transmitActionQueue == nil) || (childTransmitDataFIFO == nil))
-    {
-        return;
-    }
-    NSDictionary *transmitDataDict = [[NSDictionary alloc] initWithObjectsAndKeys:destGroupAddress, @"GroupAddress",  [NSString stringWithFormat: @"%d", value], @"Value", valueLength, @"ValueLength", nil];
-    dispatch_async(transmitActionQueue, ^{ NSLog(@"destGroupAddress = %@, value = %d, name = %@, valueLength = %@", destGroupAddress, value, name, valueLength); });
-    dispatch_async(transmitActionQueue, ^{ [childTransmitDataFIFO queuePush:transmitDataDict];});
-}
-
 @end

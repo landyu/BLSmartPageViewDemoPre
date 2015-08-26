@@ -10,21 +10,8 @@
 #import "APPChildViewController.h"
 #import "AppDelegate.h"
 #import "PropertyConfigPhrase.h"
-//#import <objc/runtime.h>
-//@import CoreData;
 
 @interface ViewController ()
-{
-    NSMutableArray *objectTable;
-    NSMutableArray *associationTable;
-    NSMutableArray *writeToAddressTable;
-    NSMutableArray *readFromAddressTable;
-    NSMutableArray *writeToValueTable;
-    NSMutableArray *readFromValueTable;
-    
-    UITextField* groupAddressField;
-    UITextField* valueField;
-}
 
 @end
 
@@ -33,19 +20,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    //add test Text Field
-    groupAddressField=[[UITextField alloc]initWithFrame:CGRectMake(150, 28, 100, 30)];
-    groupAddressField.borderStyle = UITextBorderStyleRoundedRect;//圆角
-    groupAddressField.placeholder = @"Add";
-    
-    valueField=[[UITextField alloc]initWithFrame:CGRectMake(260, 28, 100, 30)];
-    valueField.borderStyle = UITextBorderStyleRoundedRect;//圆角
-    valueField.placeholder = @"Value";
-    
-    [[self view] addSubview:groupAddressField];
-    [[self view] addSubview:valueField];
-    
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     self.pageController.dataSource = self;
@@ -77,33 +51,6 @@
     [self addChildViewController:self.pageController];
     [[self view] addSubview:[self.pageController view]];
     [self.pageController didMoveToParentViewController:self];
-    
-    
-    
-    
-//    APPChildViewController *appChildViewControllerForGetWidget = [[APPChildViewController alloc] initWithNibName:@"LivingDiningRoom" bundle:nil];
-//   
-//    for (UIView *subView in appChildViewControllerForGetWidget.view.subviews)
-//    {
-//        if ([subView isMemberOfClass:[BLUIButton class]])
-//        {
-//            //subView.
-//            //BLUIButton *button = (BLUIButton *) subView;
-//            //NSManagedObject *managedObject = [[NSManagedObject alloc] initWith];
-//            //NSManagedObject *button = (NSManagedObject *) subView;
-//            //NSManagedObject *playlistContact;
-//            //NSManagedObjectID *moID = [button objectID];
-//            
-//            //NSLog(@"subView ID = %@", moID);
-//        }
-//    }
-    
-    
-
-    
-    
-
-    
 
     
     
@@ -115,9 +62,6 @@
     //self.navigationController.leftBarButtonItem
 
 }
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -169,7 +113,6 @@
     
     //self.viewControllerNavigationItem.title = [NSString stringWithFormat:@"Screen #%ld", (long)index];
     childViewController.index = index;
-    childViewController.nibName = [self.sceneListDict valueForKey:[NSString stringWithFormat: @"%d", index]];
     //[childViewController addChildViewController:self.pageController];
     
     return childViewController;
@@ -205,25 +148,4 @@
     return 0;
 }
 
-- (void)initObjectTable
-{
-    objectTable = [[NSMutableArray alloc] initWithObjects:@"1", @"uRM-4v-WXV",nil];
-}
-
-- (void)initAddressTable
-{
-    writeToAddressTable = [[NSMutableArray alloc] initWithObjects:@"1",@"0/0/1", nil];
-    
-    readFromAddressTable = [[NSMutableArray alloc] initWithObjects:@"1",@"0/0/2", nil];
-}
-
-
-
-
-- (IBAction)recvFromBusBtn:(id)sender
-{
-    
-    NSDictionary *eibBusDataDict = [NSDictionary dictionaryWithObjectsAndKeys:groupAddressField.text, @"Address", valueField.text, @"Value",nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"RecvFromBus" object:self userInfo:eibBusDataDict];
-}
 @end

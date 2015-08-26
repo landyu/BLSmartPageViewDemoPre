@@ -12,42 +12,14 @@
 
 @end
 
-
-
 @implementation AppDelegate
-@synthesize viewControllerNavigationItemSharedInstance;
-@synthesize sceneListDictionarySharedInstance;
-@synthesize transmitQueue;
-@synthesize transmitDataFIFO;
-
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     viewControllerNavigationItemSharedInstance = nil;
     sceneListDictionarySharedInstance = nil;
-    transmitQueue = nil;
-    transmitQueue = dispatch_queue_create("tansmit queue", DISPATCH_QUEUE_SERIAL);
-    transmitDataFIFO = nil;
-    transmitDataFIFO = [NSMutableArray array];
-    
-    if ((transmitDataFIFO != nil) && (transmitQueue != nil))
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            // 耗时的操作
-            while (TRUE)
-            {
-                if ([transmitDataFIFO count] == 0)
-                {
-                    continue;
-                }
-                //NSDictionary *transmitData = [transmitDataFIFO queuePop];
-                NSLog(@"transmitData = %@", [transmitDataFIFO queuePop]);
-            };
-        });
-
-    }
-        return YES;
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
