@@ -96,9 +96,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		17D755631B79C67D00385A30 /* NibFile */ = {
+		17D755631B79C67D00385A30 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				17DBAD361B74B81000B26A83 /* APPChildViewController.xib */,
 				17DDCA101B78B22100AF415B /* PropertyConfig.plist */,
 				17DB8B671B8AAFBA00E02381 /* ButleRoom.plist */,
 				17D755611B79C62500385A30 /* ButleRoom.xib */,
@@ -109,7 +110,7 @@
 				17DB8B691B8AB0A600E02381 /* SecondBedroom.plist */,
 				17D7555F1B79C5EB00385A30 /* SecondBedroom.xib */,
 			);
-			name = NibFile;
+			name = View;
 			sourceTree = "<group>";
 		};
 		17DBACF91B74B03B00B26A83 = {
@@ -133,22 +134,21 @@
 		17DBAD041B74B03B00B26A83 /* BLSmartPageViewDemo */ = {
 			isa = PBXGroup;
 			children = (
-				17DD164F1B75ABED00E0858C /* Image */,
-				17DBAD091B74B03B00B26A83 /* AppDelegate.h */,
-				17DBAD0A1B74B03B00B26A83 /* AppDelegate.m */,
 				17DBAD0C1B74B03B00B26A83 /* ViewController.h */,
 				17DBAD0D1B74B03B00B26A83 /* ViewController.m */,
-				17DBAD0F1B74B03B00B26A83 /* Main.storyboard */,
-				17DBAD121B74B03B00B26A83 /* Images.xcassets */,
-				17DBAD141B74B03B00B26A83 /* LaunchScreen.xib */,
-				17DBAD051B74B03B00B26A83 /* Supporting Files */,
 				17DBAD341B74B81000B26A83 /* APPChildViewController.h */,
 				17DBAD351B74B81000B26A83 /* APPChildViewController.m */,
-				17DBAD361B74B81000B26A83 /* APPChildViewController.xib */,
-				17DC5B461B7B24B70007C40B /* BLCustomClass */,
-				17D755631B79C67D00385A30 /* NibFile */,
+				17DC5B471B7B25690007C40B /* BLUIButton.h */,
+				17DC5B481B7B25690007C40B /* BLUIButton.m */,
 				17DDCA121B78B6E500AF415B /* PropertyConfigPhrase.h */,
 				17DDCA131B78B6E500AF415B /* PropertyConfigPhrase.m */,
+				17DB8B6D1B8B274600E02381 /* NSMutableArray+QueueStack.h */,
+				17DB8B6E1B8B274600E02381 /* NSMutableArray+QueueStack.m */,
+				17DBAD091B74B03B00B26A83 /* AppDelegate.h */,
+				17DBAD0A1B74B03B00B26A83 /* AppDelegate.m */,
+				17D755631B79C67D00385A30 /* View */,
+				17DBAD051B74B03B00B26A83 /* Supporting Files */,
+				17DD164F1B75ABED00E0858C /* Image */,
 			);
 			path = BLSmartPageViewDemo;
 			sourceTree = "<group>";
@@ -156,10 +156,11 @@
 		17DBAD051B74B03B00B26A83 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				17DBAD0F1B74B03B00B26A83 /* Main.storyboard */,
+				17DBAD141B74B03B00B26A83 /* LaunchScreen.xib */,
+				17DBAD121B74B03B00B26A83 /* Images.xcassets */,
 				17DBAD061B74B03B00B26A83 /* Info.plist */,
 				17DBAD071B74B03B00B26A83 /* main.m */,
-				17DB8B6D1B8B274600E02381 /* NSMutableArray+QueueStack.h */,
-				17DB8B6E1B8B274600E02381 /* NSMutableArray+QueueStack.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -179,15 +180,6 @@
 				17DBAD201B74B03B00B26A83 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		17DC5B461B7B24B70007C40B /* BLCustomClass */ = {
-			isa = PBXGroup;
-			children = (
-				17DC5B471B7B25690007C40B /* BLUIButton.h */,
-				17DC5B481B7B25690007C40B /* BLUIButton.m */,
-			);
-			name = BLCustomClass;
 			sourceTree = "<group>";
 		};
 		17DD164F1B75ABED00E0858C /* Image */ = {
